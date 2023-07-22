@@ -12,7 +12,9 @@ const currentTypes = ref([
     dataTypesArray[2],
 ])
 const dataArray = ref([]);
+const choosenType = ref(dataTypesArray[0]);
 
+// -- Init dataArray
 for (let i = 0; i < 7; i++) {
   let row = [];
   for (let j = 0; j < 7; j++) {
@@ -27,6 +29,9 @@ for (let i = 0; i < 7; i++) {
   }
   dataArray.value.push(row);
 }
+// Set choosenType in first cell
+dataArray.value[1][1].value = choosenType;
+
 
 // -- Functions --
 function getGameGrid(){
@@ -95,18 +100,6 @@ function getPlayableCells(gameGrid){
 function isCellCanBePlaced(cell){
   const gameGrid = getGameGrid();
 
-  // Check if there is already an element placed on the grid
-  const isGridEmpty = gameGrid.every(row => {
-    return row.every(cell => {
-      return cell.value === null
-    })
-  });
-
-  // If the grid is empty, the only possible placement is cell-1-1
-  if (isGridEmpty && cell.id !== 'cell-1-1') {
-    return false;
-  }
-
   // If choosen cell has already a value, skip
   if (cell.value){
     return false;
@@ -114,7 +107,7 @@ function isCellCanBePlaced(cell){
 
   const playableCells = getPlayableCells(gameGrid);
 
-  if(!playableCells.includes(cell.id) && !isGridEmpty){
+  if(!playableCells.includes(cell.id)){
     return false;
   }
 
