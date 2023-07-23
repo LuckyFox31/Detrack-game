@@ -1,8 +1,6 @@
 <script setup>
 import {ref} from "vue";
 import Game from "./components/Game.vue";
-import {dataTypesArray} from "./constants/dataTypes.js";
-import {gameModes} from "./constants/gameModes.js";
 import Menu from "./components/Menu.vue";
 
 const currentChoosenType = ref('');
