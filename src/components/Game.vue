@@ -19,6 +19,7 @@ const dataArray = ref([]);
 const choosenType = ref(null);
 const currentScore = ref(0);
 const currentRound = ref(0);
+const isGameFinished = ref(false);
 
 // -- Init dataArray
 for (let i = 0; i < 7; i++) {
@@ -41,6 +42,8 @@ watch(currentTypes, (newCurrentTypesValue) => {
   if(newCurrentTypesValue.length === 0 && currentRound.value !== maxRound){
     currentTypes.value = getTwoRandomTypes();
     currentRound.value++;
+  } else if(newCurrentTypesValue.length === 0 && currentRound.value === maxRound) {
+    isGameFinished.value = true;
   }
 }, {deep: true});
 
@@ -76,6 +79,10 @@ function drop(event, cell){
     }
   }
 }
+
+function reloadPage(){
+  window.location.reload();
+}
 </script>
 
 <template>
@@ -91,6 +98,11 @@ function drop(event, cell){
       <div class="rug">
         <div class="dice" v-for="(type, i) in currentTypes" draggable="true" @dragstart="dragStart($event, type)">{{ type }}</div>
       </div>
+    </div>
+    <div v-if="isGameFinished" id="scoreContainer">
+      <p>Votre score :</p>
+      <p>{{ currentScore }}</p>
+      <button @click="reloadPage">Rejouer</button>
     </div>
     <div id="roundContainer">
       <p>Tour {{ currentRound }} / {{ maxRound }}</p>
@@ -231,6 +243,42 @@ main::after{
       inset 0 -5px #bbb,
       inset 5px 0 #d7d7d7,
       inset -5px 0 #d7d7d7;
+}
+
+#scoreContainer{
+  position: absolute;
+  top: 50%;
+  right: 7%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 1rem 5rem;
+  transform: translateY(-50%) rotate(2deg);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#scoreContainer p {
+  font-size: calc(15vw / 8);
+  text-align: center;
+}
+
+#scoreContainer p:nth-child(2){
+  font-size: calc(35vw / 8);
+}
+
+#scoreContainer button{
+  background: none;
+  border: none;
+  color: black;
+  font-size: calc(15vw / 8);
+  font-family: 'Nanum Pen Script', cursive;
+  cursor: pointer;
+}
+
+#scoreContainer button:hover{
+  text-decoration: underline;
 }
 
 #roundContainer{
