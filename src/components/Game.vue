@@ -1,17 +1,22 @@
 <script setup>
 // -- Dependencies --
-import {ref, watch, onMounted} from "vue";
+import {ref, watch, onMounted, defineProps} from "vue";
 import isCellCanBePlaced from "../utils/isCellCanBePlaced.js";
 import calculateScore from "../utils/calculateScore.js";
 import displayScore from "../utils/displayScore.js";
 import getTwoRandomTypes from "../utils/getTwoRandomTypes.js";
-import {dataTypesArray} from "../constants/dataTypes.js";
 import {maxRound} from "../constants/maxRound.js";
+
+// -- Props --
+const props = defineProps({
+  choosenType: String,
+  gameMode: Number,
+});
 
 // -- References --
 const currentTypes = ref([]);
 const dataArray = ref([]);
-const choosenType = ref(dataTypesArray[0]);
+const choosenType = ref(null);
 const currentScore = ref(0);
 const currentRound = ref(0);
 
@@ -30,8 +35,6 @@ for (let i = 0; i < 7; i++) {
   }
   dataArray.value.push(row);
 }
-// Set choosenType in first cell
-dataArray.value[1][1].value = choosenType;
 
 // -- Watchers --
 watch(currentTypes, (newCurrentTypesValue) => {
@@ -43,6 +46,10 @@ watch(currentTypes, (newCurrentTypesValue) => {
 
 // -- Life cycles --
 onMounted(() => {
+  // Set choosenType in first cell
+  choosenType.value = props.choosenType;
+  dataArray.value[1][1].value = choosenType;
+
   currentTypes.value = getTwoRandomTypes();
   currentRound.value = 1;
 })
