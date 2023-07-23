@@ -6,12 +6,14 @@ import calculateScore from "../utils/calculateScore.js";
 import displayScore from "../utils/displayScore.js";
 import getTwoRandomTypes from "../utils/getTwoRandomTypes.js";
 import {dataTypesArray} from "../constants/dataTypes.js";
+import {maxRound} from "../constants/maxRound.js";
 
 // -- References --
 const currentTypes = ref([]);
 const dataArray = ref([]);
 const choosenType = ref(dataTypesArray[0]);
 const currentScore = ref(0);
+const currentRound = ref(0);
 
 // -- Init dataArray
 for (let i = 0; i < 7; i++) {
@@ -33,14 +35,16 @@ dataArray.value[1][1].value = choosenType;
 
 // -- Watchers --
 watch(currentTypes, (newCurrentTypesValue) => {
-  if(newCurrentTypesValue.length === 0){
+  if(newCurrentTypesValue.length === 0 && currentRound.value !== maxRound){
     currentTypes.value = getTwoRandomTypes();
+    currentRound.value++;
   }
 }, {deep: true});
 
 // -- Life cycles --
 onMounted(() => {
   currentTypes.value = getTwoRandomTypes();
+  currentRound.value = 1;
 })
 
 // -- Functions --
