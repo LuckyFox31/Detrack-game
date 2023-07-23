@@ -81,7 +81,15 @@ function drop(event, cell){
       </div>
     </div>
     <div id="typesContainer">
-      <div v-for="(type, i) in currentTypes" draggable="true" @dragstart="dragStart($event, type)">{{ type }}</div>
+      <div class="rug">
+        <div class="dice" v-for="(type, i) in currentTypes" draggable="true" @dragstart="dragStart($event, type)">{{ type }}</div>
+      </div>
+    </div>
+    <div id="roundContainer">
+      <p>Tour {{ currentRound }} / {{ maxRound }}</p>
+    </div>
+    <div id="choosenTypeContainer">
+      <p><span>Mon symbole :</span> <span class="type">{{ choosenType }}</span></p>
     </div>
   </main>
 </template>
@@ -93,12 +101,55 @@ main{
   justify-content: center;
 }
 
+main::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 90vh;
+  width: 5vw;
+  background-image: url("public/img/pencil.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: translate(75px, -85px) rotate(-130deg);
+  filter: drop-shadow(0px 1px 4px rgba(0, 0, 0, 0.3));
+}
+
 #sheetContainer {
+  position: relative;
   width: 50vw;
   aspect-ratio: 1/1;
   background: white;
   display: grid;
   grid-template-rows: repeat(7, 1fr);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#sheetContainer::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(1.5deg);
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  z-index: -1;
+}
+
+#sheetContainer::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-3deg);
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  z-index: -1;
 }
 
 .row {
@@ -133,18 +184,31 @@ main{
 }
 
 #typesContainer{
-  width: calc(50vw / 5);
+  width: 15vw;
+  height: 40vh;
   margin-left: 3rem;
+  color: black;
+  padding: 0.5rem;
+  background-color: #006200;
+  border-radius:15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+#typesContainer .rug{
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: black;
-  border: 3px solid white;
-  padding: 1rem 0;
-  border-radius: 1rem;
+  justify-content: space-around;
+  border: 2px dashed #c4c4c4;
+  border-radius:10px;
+  position:relative;
+  box-shadow: 0 0 0 1px #007b00;
 }
 
-#typesContainer div{
+#typesContainer .dice{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -153,12 +217,47 @@ main{
   width: calc(50vw / 7);
   aspect-ratio: 1/1;
   overflow: hidden;
-  background-color: white;
-  margin-bottom: 1rem;
+  background-color: #e7e7e7;
   border-radius: 0.3rem;
+  box-shadow:
+      inset 0 5px #f0f0f0,
+      inset 0 -5px #bbb,
+      inset 5px 0 #d7d7d7,
+      inset -5px 0 #d7d7d7;
 }
 
-#typesContainer div:last-child{
-  margin-bottom: 0;
+#roundContainer{
+  position: absolute;
+  right: 5%;
+  top: 5%;
+  background-color: white;
+  padding: 1rem 3rem;
+  font-size: calc(30vw / 8);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  transform: rotate(2deg);
+}
+
+#choosenTypeContainer{
+  position: absolute;
+  right: 5%;
+  bottom: 8%;
+  background-color: white;
+  padding: 0.5rem 2rem;
+  font-size: calc(15vw / 8);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  transform: rotate(-3deg);
+}
+
+#choosenTypeContainer p{
+  display: flex;
+  align-items: center;
+}
+
+#choosenTypeContainer p span:first-child{
+  margin-right: 1rem;
+}
+
+#choosenTypeContainer p .type{
+  font-size: calc(30vw / 8);
 }
 </style>
