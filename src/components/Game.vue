@@ -127,7 +127,7 @@ main::after{
   left: 0;
   height: 90vh;
   width: 5vw;
-  background-image: url("public/img/pencil.webp");
+  background-image: url("/img/pencil.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: contain;
