@@ -1,0 +1,1 @@
+export const dataTypesArray = ['#', 'Z', 'O', '/', 'X', 'V'];
