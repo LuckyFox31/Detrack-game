@@ -1,22 +1,14 @@
 <script setup>
 // -- Dependencies --
-import {ref} from "vue";
+import {ref, watch, onMounted} from "vue";
 import isCellCanBePlaced from "../utils/isCellCanBePlaced.js";
 import calculateScore from "../utils/calculateScore.js";
 import displayScore from "../utils/displayScore.js";
+import getTwoRandomTypes from "../utils/getTwoRandomTypes.js";
 import {dataTypesArray} from "../constants/dataTypes.js";
 
-// -- Constants --
-
 // -- References --
-const currentTypes = ref([
-  dataTypesArray[0],
-  dataTypesArray[0],
-  dataTypesArray[0],
-  dataTypesArray[0],
-  dataTypesArray[1],
-  dataTypesArray[2],
-])
+const currentTypes = ref([]);
 const dataArray = ref([]);
 const choosenType = ref(dataTypesArray[0]);
 const currentScore = ref(0);
@@ -38,6 +30,18 @@ for (let i = 0; i < 7; i++) {
 }
 // Set choosenType in first cell
 dataArray.value[1][1].value = choosenType;
+
+// -- Watchers --
+watch(currentTypes, (newCurrentTypesValue) => {
+  if(newCurrentTypesValue.length === 0){
+    currentTypes.value = getTwoRandomTypes();
+  }
+}, {deep: true});
+
+// -- Life cycles --
+onMounted(() => {
+  currentTypes.value = getTwoRandomTypes();
+})
 
 // -- Functions --
 function dragStart(event, type){
